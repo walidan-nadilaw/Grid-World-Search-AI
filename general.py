@@ -53,16 +53,27 @@ def eightD(node1, node2):
 
 class MinHeap_NumbVal:
     def __init__(self):
-        self.a = []     # berisi tuple [[node_i, node_j], value, [parent_i, parent_j]]
+        self.a = []     # berisi tuple [[node_i, node_j], value, [parent_i, parent_j], order]
+        self.counter = 0    # tie-breaker timestamp
+
+    def better(self, x, y):
+        if x[1] < y[1]:
+            return True
+        if x[1] == y[1] and x[3] < y[3]:
+            return True
+        return False
 
     """Insert a new element into the Min Heap."""
     def insert(self, node):
-        self.a.append(node)
+        wrapped = [node[0], node[1], node[2], self.counter]
+        self.counter += 1
+
+        self.a.append(wrapped)
         i = len(self.a) - 1
         while i > 0:
             parent_index = (i - 1) // 2
             # Tambahkan logika untuk membandingkan node dengan biaya yang sama
-            if (self.a[parent_index][1] > self.a[i][1]):
+            if (self.better(self.a[i], self.a[parent_index])):
                 self.a[i], self.a[parent_index] = self.a[parent_index], self.a[i]
                 i = parent_index
             else:
@@ -84,9 +95,9 @@ class MinHeap_NumbVal:
             left = 2 * i + 1
             right = 2 * i + 2
             smallest = i
-            if left < len(self.a) and self.a[left][1] < self.a[smallest][1]:
+            if left < len(self.a) and self.better(self.a[left], self.a[smallest]):
                 smallest = left
-            if right < len(self.a) and self.a[right][1] < self.a[smallest][1]:
+            if right < len(self.a) and self.better(self.a[right], self.a[smallest]):
                 smallest = right
             if smallest != i:
                 self.a[i], self.a[smallest] = self.a[smallest], self.a[i]
@@ -101,9 +112,9 @@ class MinHeap_NumbVal:
         left = 2 * i + 1
         right = 2 * i + 2
 
-        if left < n and self.a[left][1] < self.a[smallest][1]:
+        if left < n and self.better(self.a[left], self.a[smallest]):
             smallest = left
-        if right < n and self.a[right][1] < self.a[smallest][1]:
+        if right < n and self.better(self.a[right], self.a[smallest]):
             smallest = right
         if smallest != i:
             self.a[i], self.a[smallest] = self.a[smallest], self.a[i]
