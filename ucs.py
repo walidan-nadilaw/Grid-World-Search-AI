@@ -1,28 +1,40 @@
 from sys import *
 from general import *
 
-# insert untuk priority queque
-def enqueue(q, d):
-    m = 0
-    for i in range(len(q)):
-        if q[i] >= d:
-            m = i
-    q.insert(m, d)
-
 def UCS(row, col, grid, start, goal):
-    AccWeightMatrix = []
+    
+    enqueuedBefore = []
     for i in range(row):
-        rowmat = []
         for j in range(col):
-            rowmat.append(sys.maxsize)
+            enqueuedBefore[i][j] = 0
+    
+    explored = []
+    # AccWeightMatrix = []
+    # for i in range(row):
+    #     rowmat = []
+    #     for j in range(col):
+    #         rowmat.append(sys.maxsize)
+    
+    priorityQueue = MinHeap_NumbVal()
+    
+    priorityQueue.insert([[start[0], start[1]], 0, [-1, -1]])
+    explore = priorityQueue.delete(priorityQueue.getMin())
+    enqueuedBefore[explore[0][0]][explore[0][1]] = 1
 
-    priorityQueue = []
-
-    for neighbor in getNeighbor(start[0], start[1], row, col, grid):
-        enqueue(priorityQueue, neighbor: 'a')
-
-    explored = priorityQueue.pop(0)
-
-    while (explored != goal):
+    while(explore != [[-1,-1], -1, [-1,-1]] and explore[0] != goal):
+        for neighbor in getNeighbor(explore[0][0], explore[0][1], row, col, grid):
+            if (grid[neighbor[0]][neighbor[1]] == '#' or enqueuedBefore[neighbor[0]][neighbor[1]] == 1): continue
+            
+            neighbor_d = explore[1] + eightD(explore[0], neighbor[0])
+            # if (neighbor_d >= enqueuedWeight[neighbor[0], neighbor[1]]): continue
+    
+            priorityQueue.insert([[neighbor[0], neighbor[1]], neighbor_d, [explore[0][0], explore[0][1]]])
+            enqueuedBefore[neighbor[0]][neighbor[1]] = 1
         
-    return 1
+        explored.append(explore)
+        explore = priorityQueue.delete(priorityQueue.getMin())
+        enqueuedBefore[explore[0][0]][explore[0][1]] = 1
+
+    
+
+        
