@@ -37,7 +37,11 @@ def UCS(row, col, grid, start, goal):
     if explore != [[-1, -1], -1, [-1, -1]] and explore[0] == goal:
         explored.append(explore)
 
-    printUCS(explored, goal)
+    # printUCS(explored, goal)
+
+    path = pathBacktrack(explored)
+    # return n node explored, path cost, path
+    return len(explored), explored.pop(), path
 
 def printUCS(explored, goal):
     if not explored or explored[-1][0] != goal:
