@@ -39,15 +39,18 @@ def UCS(row, col, grid, start, goal):
     if explore != [[-1, -1], -1, [-1, -1]] and explore[0] == goal:
         explored.append(explore)
 
-    # printUCS(explored, goal)
-
-    path = pathBacktrack(explored)
+    if not explored or explored[-1][0] != goal:
+        path = "No path found"
+    else:
+        path = pathBacktrack(explored)
 
     end_time = time.perf_counter()
     elapsed_time = end_time - start_time
     # return n node explored, path cost, path, duration
     return len(explored), explored.pop(), path, elapsed_time
 
+
+# Debug Purpose
 def printUCS(explored, goal):
     if not explored or explored[-1][0] != goal:
         print("No path found")
