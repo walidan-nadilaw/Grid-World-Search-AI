@@ -261,3 +261,10 @@ def pathBacktrack(nodes):
         cur = parent_map.get(cur, (-1, -1))
 
     return path
+
+def printPath(path):
+    for i in range(len(path)):
+        print(f"({path[i][0]},{path[i][1]})", end="")
+        if i < len(path) - 1:
+            print(" -> ", end="")
+    print()

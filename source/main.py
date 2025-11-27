@@ -1,5 +1,5 @@
 from ucs import *
-from general import inputGrid
+from general import inputGrid, printPath
 
 if __name__ == "__main__":
 
@@ -8,7 +8,7 @@ if __name__ == "__main__":
     nExp_UCS, pathCost_UCS, path_UCS = UCS(row, col, grid, start, goal)
     print(nExp_UCS)
     print(pathCost_UCS)
-    print(path_UCS)
+    printPath(path_UCS)
 
     for i in range(row):
         for j in range(col):
