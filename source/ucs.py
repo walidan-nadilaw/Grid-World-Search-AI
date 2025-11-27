@@ -1,6 +1,8 @@
 from general import *
+import time
 
 def UCS(row, col, grid, start, goal):
+    start_time = time.perf_counter()
     
     # simpan best-known g-cost untuk tiap sel
     enqueuedWeight = [[float('inf') for _ in range(col)] for _ in range(row)]
@@ -40,8 +42,11 @@ def UCS(row, col, grid, start, goal):
     # printUCS(explored, goal)
 
     path = pathBacktrack(explored)
-    # return n node explored, path cost, path
-    return len(explored), explored.pop(), path
+
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+    # return n node explored, path cost, path, duration
+    return len(explored), explored.pop(), path, elapsed_time
 
 def printUCS(explored, goal):
     if not explored or explored[-1][0] != goal:

@@ -57,7 +57,7 @@ def eightD(node1, node2):
 
 class MinHeap_NumbVal:
     def __init__(self):
-        self.a = []     # berisi tuple [[node_i, node_j], value, [parent_i, parent_j], order]
+        self.a = []         # berisi tuple [[node_i, node_j], value, [parent_i, parent_j], order]
         self.counter = 0    # tie-breaker timestamp
 
     def better(self, x, y):
