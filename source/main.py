@@ -10,9 +10,9 @@ if __name__ == "__main__":
             print(grid[i][j], end=' ')
         print()
 
-    nExp_UCS, pathCost_UCS, path_UCS, time_ucs = UCS(row, col, grid, start, goal)
+    nExp_UCS, pathCost_UCS, path_UCS, time_UCS = UCS(row, col, grid, start, goal)
     print("UCS explore\t:", nExp_UCS)
     print("UCS cost\t:", pathCost_UCS[1])
     print("UCS path\t: ", end='')
     printPath(path_UCS)
-    print(f"UCS time\t: {time_ucs:.6f} seconds")
+    print(f"UCS time\t: {time_UCS:.6f} seconds")
