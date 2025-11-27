@@ -1,13 +1,17 @@
 def inputGrid():
-    row, col = list(map(int, input().split()))
-    
-    grid = []
-    for _ in range(row): grid.append(list(input().split()))
-    
-    start = searchChar("S", row, col, grid)
-    goal = searchChar("G", row, col, grid)
+    with open('dataset.txt') as file:
+        line = file.readline().strip().split()
+        row, col = list(map(int, line))
+        
+        grid = []
+        for _ in range(row): 
+            line = file.readline().strip().split()
+            grid.append(list(line))
+        
+        start = searchChar("S", row, col, grid)
+        goal = searchChar("G", row, col, grid)
 
-    return row, col, grid, start, goal
+        return row, col, grid, start, goal
 
 def searchChar(char, row, col, grid):
     node = [-1, -1]
