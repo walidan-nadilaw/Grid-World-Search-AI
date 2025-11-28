@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     # UCS
     # Memanggil UCS
-    nExp_UCS, pathCost_UCS, path_UCS, time_UCS = UCS(row, col, grid, start, goal)
+    nExp_UCS, pathCost_UCS, path_UCS, time_UCS, memory_UCS = UCS(row, col, grid, start, goal)
 
     # Mencetak hasil
     print("UCS explore\t:", nExp_UCS)
@@ -26,6 +26,7 @@ if __name__ == "__main__":
     else: printPath(path_UCS)                   # ketika ada path dari start menuju goal
     
     print(f"UCS time\t: {time_UCS:.6f} seconds")
+    print("UCS memory\t:", memory_UCS / 1024, "KB")
 
     path_UCS.pop(0)
     path_UCS.pop()
