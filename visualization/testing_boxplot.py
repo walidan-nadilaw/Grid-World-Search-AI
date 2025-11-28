@@ -1,3 +1,6 @@
+# Bocplot kepake banyak sih
+# Bisa buat waktu, memori, path cost, node explored, (node explored/grid size)
+
 import matplotlib.pyplot as plt
 import numpy as np
 
