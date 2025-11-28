@@ -5,7 +5,7 @@ if __name__ == "__main__":
 
     # Membaca input grid dari file .txt
     # Parameter fungsi inputGrid adalah nama dataset (tanpa .txt)
-    row, col, grid, start, goal = inputGrid('dataset')
+    row, col, grid, start, goal = inputGrid('input3')
 
     # Mencetak grid yang dibaca
     for i in range(row):
@@ -26,3 +26,12 @@ if __name__ == "__main__":
     else: printPath(path_UCS)                   # ketika ada path dari start menuju goal
     
     print(f"UCS time\t: {time_UCS:.6f} seconds")
+
+    path_UCS.pop(0)
+    path_UCS.pop()
+    for node in path_UCS:
+        grid[node[0]][node[1]] = 'P'
+    for i in range(row):
+        for j in range(col):
+            print(grid[i][j], end=' ')
+        print()

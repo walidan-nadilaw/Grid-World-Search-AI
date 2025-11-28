@@ -1,5 +1,5 @@
 def inputGrid(datasetName):
-    with open(datasetName+'.txt') as file:
+    with open('dataset/'+datasetName+'.txt') as file:
         line = file.readline().strip().split()
         row, col = list(map(int, line))
         
