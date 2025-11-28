@@ -2,6 +2,7 @@ from general import *
 import time
 
 def UCS(row, col, grid, start, goal):
+    # 
     start_time = time.perf_counter()
     
     # simpan best-known g-cost untuk tiap sel
