@@ -1,7 +1,11 @@
 from general import *
 import time
+import tracemalloc
 
 def UCS(row, col, grid, start, goal):
+    # Memulai perhitungan memori
+    tracemalloc.start()
+    
     # Menyimpan waktu dimana fungsi mulai berjalan
     startTime = time.perf_counter()
     
@@ -72,8 +76,10 @@ def UCS(row, col, grid, start, goal):
 
     # durasi fungsi = waktu saat ini - waktu mulai
     elapsedTime = time.perf_counter() - startTime
+    current, peakMemory = tracemalloc.get_traced_memory()
+
     # return n node explored, path cost, path, duration
-    return len(explored), explored.pop(), path, elapsedTime
+    return len(explored), explored.pop(), path, elapsedTime, peakMemory
 
 
 # Debug Purpose
