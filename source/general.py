@@ -21,7 +21,7 @@ def searchChar(char, row, col, grid):
                 node = [i, j]
                 return node
 
-def getNeighbor(i, j, row, col, grid):
+def getNeighbor(i, j, row, col, grid): #return list of list valid neighbor coordinates
     neighbor = []
     if i > 0:
         if grid[i-1][j] != '#':    neighbor.append([i-1, j])   # utara
@@ -41,7 +41,7 @@ def getNeighbor(i, j, row, col, grid):
         if grid[i-1][j-1] != '#':  neighbor.append([i-1, j-1]) # barat laut
     return neighbor
 
-def euclidean8d(node1, node2):
+def euclidean8d(node1, node2): #return float jarak heuristik antara start dan goal
     dx = abs(node1[0] - node2[0])
     dy = abs(node1[1] - node2[1])
     
@@ -50,14 +50,14 @@ def euclidean8d(node1, node2):
     else:
         return (dx-dy) + dy * (2)**0.5
 
-def eightD(node1, node2):
+def eightD(node1, node2): #return float jarak antara tetangga
     if(node1[0] == node2[0]): return 1
     if(node1[1] == node2[1]): return 1
     return (2) ** 0.5
 
 class MinHeap_NumbVal:
     def __init__(self):
-        self.a = []         # berisi tuple [[node_i, node_j], value, [parent_i, parent_j], order]
+        self.a = []         # list yang setiap elemennya berisi [[node_i, node_j], value, [parent_i, parent_j], order]
         self.counter = 0    # tie-breaker timestamp
 
     def better(self, x, y):

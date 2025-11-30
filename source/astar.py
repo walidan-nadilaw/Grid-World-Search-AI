@@ -2,7 +2,7 @@ from general import *
 import time
 import tracemalloc
 
-def UCS(row, col, grid, start, goal):
+def Astar(row, col, grid, start, goal):
     # Memulai perhitungan memori
     tracemalloc.start()
     
@@ -22,8 +22,8 @@ def UCS(row, col, grid, start, goal):
     # Priority queue (PQ) untuk menyimpan daftar node yang sudah dienqueue tapi belom divisit
     priorityQueue = MinHeap_NumbVal()
     
-    # inisialisasi algoritma ucs
-    enqueuedWeight[start[0]][start[1]] = 0      # menyatakan bahwa bobot kumulatif start adalah 0
+    # inisialisasi algoritma Astar
+    enqueuedWeight[start[0]][start[1]] = euclidean8d(start, goal)      # menyatakan bobot start adalah heuristiknya
     priorityQueue.insert([[start[0], start[1]], 0, [-1, -1]]) # memasukkan node start ke PQ
     explore = priorityQueue.popMin()            # mengvisit node terkecil pada PQ, disini berarti node start
 
@@ -48,7 +48,7 @@ def UCS(row, col, grid, start, goal):
             # Bobot tetangga adalah bobot kumulatif node E ditambah jarak node E ke tetangga
             neighbor_d = explore[1] + eightD(explore[0], neighbor)
 
-            enqueuedWeight[neighbor[0]][neighbor[1]] = neighbor_d
+            enqueuedWeight[neighbor[0]][neighbor[1]] = neighbor_d + euclidean8d(neighbor, goal)
             # Memasukkan tetangga ke PQ
             priorityQueue.insert([[neighbor[0], neighbor[1]], neighbor_d, [explore[0][0], explore[0][1]]])
         
@@ -80,11 +80,3 @@ def UCS(row, col, grid, start, goal):
 
     # return n node explored, path cost, path, duration
     return len(explored), explored.pop(), path, elapsedTime, peakMemory
-
-
-# Debug Purpose
-def printUCS(explored, goal):
-    if not explored or explored[-1][0] != goal:
-        print("No path found")
-    else:
-        printBacktrack(explored)
