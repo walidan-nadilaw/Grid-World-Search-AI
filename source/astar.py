@@ -75,7 +75,7 @@ def Astar(row, col, grid, start, goal):
     if not explored or explored[-1][0] != goal:
         path = "No path found"
     else:
-        path = pathBacktrack(explored)
+        path = pathBacktrack_Astar(explored)
 
     # durasi fungsi = waktu saat ini - waktu mulai
     elapsedTime = time.perf_counter() - startTime

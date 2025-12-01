@@ -6,14 +6,14 @@ if __name__ == "__main__":
 
     # Membaca input grid dari file .txt
     # Parameter fungsi inputGrid adalah nama dataset (tanpa .txt)
-    row, col, grid, start, goal = inputGrid('input100x100')
+    row, col, grid, start, goal = inputGrid('input500x500')
 
     # Mencetak grid yang dibaca
-    for i in range(row):
-        for j in range(col):
-            print(grid[i][j], end=' ')
-        print()
-    print()
+    # for i in range(row):
+    #     for j in range(col):
+    #         print(grid[i][j], end=' ')
+    #     print()
+    # print()
 
 
 #======= UCS =======
@@ -30,15 +30,15 @@ if __name__ == "__main__":
     print(f"UCS time\t: {time_UCS:.6f} seconds")
     print("UCS memory\t:", memory_UCS / 1024, "KB")
 
-    path_UCS.pop(0)
-    path_UCS.pop()
-    for node in path_UCS:
-        grid[node[0]][node[1]] = 'P'
-    for i in range(row):
-        for j in range(col):
-            print(grid[i][j], end=' ')
-        print()
-    print()
+    # path_UCS.pop(0)
+    # path_UCS.pop()
+    # for node in path_UCS:
+    #     grid[node[0]][node[1]] = 'P'
+    # for i in range(row):
+    #     for j in range(col):
+    #         print(grid[i][j], end=' ')
+    #     print()
+    # print()
 
 
 #======= A STAR =======
@@ -55,13 +55,13 @@ if __name__ == "__main__":
     print(f"Astar time\t: {time_Astar:.6f} seconds")
     print("Astar memory\t:", memory_Astar / 1024, "KB")
 
-    path_Astar.pop(0)
-    path_Astar.pop()
-    for node in path_Astar:
-        grid[node[0]][node[1]] = 'P'
-    for i in range(row):
-        for j in range(col):
-            print(grid[i][j], end=' ')
-        print()
-    print()
+    # path_Astar.pop(0)
+    # path_Astar.pop()
+    # for node in path_Astar:
+    #     grid[node[0]][node[1]] = 'P'
+    # for i in range(row):
+    #     for j in range(col):
+    #         print(grid[i][j], end=' ')
+    #     print()
+    # print()
     
