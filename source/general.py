@@ -55,7 +55,7 @@ def eightD(node1, node2): #return float jarak antara tetangga
     if(node1[1] == node2[1]): return 1
     return (2) ** 0.5
 
-class MinHeap_NumbVal:
+class MinHeap_UCS:
     def __init__(self):
         self.a = []         # list yang setiap elemennya berisi [[node_i, node_j], value, [parent_i, parent_j], order]
         self.counter = 0    # tie-breaker timestamp
@@ -83,32 +83,32 @@ class MinHeap_NumbVal:
             else:
                 break
 
-    """Delete a specific element from the Min Heap."""
-    def delete(self, value):
-        i = -1
-        for j in range(len(self.a)):
-            if self.a[j][1] == value:
-                i = j
-                break
-        if i == -1:
-            return [[-1, -1], -1, [-1, -1]]
-        popped = self.a[i]
-        self.a[i] = self.a[-1]
-        self.a.pop()
-        while True:
-            left = 2 * i + 1
-            right = 2 * i + 2
-            smallest = i
-            if left < len(self.a) and self.better(self.a[left], self.a[smallest]):
-                smallest = left
-            if right < len(self.a) and self.better(self.a[right], self.a[smallest]):
-                smallest = right
-            if smallest != i:
-                self.a[i], self.a[smallest] = self.a[smallest], self.a[i]
-                i = smallest
-            else:
-                break
-        return popped
+    # """Delete a specific element from the Min Heap."""
+    # def delete(self, value):
+    #     i = -1
+    #     for j in range(len(self.a)):
+    #         if self.a[j][1] == value:
+    #             i = j
+    #             break
+    #     if i == -1:
+    #         return [[-1, -1], -1, [-1, -1]]
+    #     popped = self.a[i]
+    #     self.a[i] = self.a[-1]
+    #     self.a.pop()
+    #     while True:
+    #         left = 2 * i + 1
+    #         right = 2 * i + 2
+    #         smallest = i
+    #         if left < len(self.a) and self.better(self.a[left], self.a[smallest]):
+    #             smallest = left
+    #         if right < len(self.a) and self.better(self.a[right], self.a[smallest]):
+    #             smallest = right
+    #         if smallest != i:
+    #             self.a[i], self.a[smallest] = self.a[smallest], self.a[i]
+    #             i = smallest
+    #         else:
+    #             break
+    #     return popped
 
     """Heapify function to maintain the heap property.""" 
     def minHeapify(self, i, n):
@@ -138,6 +138,101 @@ class MinHeap_NumbVal:
         """Remove and return the root (min) node. Return sentinel if empty."""
         if not self.a:
             return [[-1, -1], -1, [-1, -1]]
+        root = self.a[0]
+        if len(self.a) == 1:
+            self.a.pop()
+            return root
+        # pindahkan last ke root lalu heapify
+        self.a[0] = self.a.pop()
+        self.minHeapify(0, len(self.a))
+        return root
+
+    def printHeap(self):
+        print("Min Heap:", self.a)
+
+class MinHeap_Astar:
+    def __init__(self):
+        self.a = []         # list yang setiap elemennya berisi [[node_i, node_j], value, [parent_i, parent_j], order]
+        self.counter = 0    # tie-breaker timestamp
+
+    def better(self, x, y):
+        if x[1] + x[2] < y[1] + y[2]:
+            return True
+        if x[1] + x[2] == y[1] + y[2] and x[3] < y[3]:
+            return True
+        return False
+
+    """Insert a new element into the Min Heap."""
+    def insert(self, node):
+        wrapped = [node[0], node[1], node[2], node[3], self.counter]
+        self.counter += 1
+
+        self.a.append(wrapped)
+        i = len(self.a) - 1
+        while i > 0:
+            parent_index = (i - 1) // 2
+            # Tambahkan logika untuk membandingkan node dengan biaya yang sama
+            if (self.better(self.a[i], self.a[parent_index])):
+                self.a[i], self.a[parent_index] = self.a[parent_index], self.a[i]
+                i = parent_index
+            else:
+                break
+
+    # """Delete a specific element from the Min Heap."""
+    # def delete(self, value):
+    #     i = -1
+    #     for j in range(len(self.a)):
+    #         if self.a[j][1] == value:
+    #             i = j
+    #             break
+    #     if i == -1:
+    #         return [[-1, -1], -1, [-1, -1]]
+    #     popped = self.a[i]
+    #     self.a[i] = self.a[-1]
+    #     self.a.pop()
+    #     while True:
+    #         left = 2 * i + 1
+    #         right = 2 * i + 2
+    #         smallest = i
+    #         if left < len(self.a) and self.better(self.a[left], self.a[smallest]):
+    #             smallest = left
+    #         if right < len(self.a) and self.better(self.a[right], self.a[smallest]):
+    #             smallest = right
+    #         if smallest != i:
+    #             self.a[i], self.a[smallest] = self.a[smallest], self.a[i]
+    #             i = smallest
+    #         else:
+    #             break
+    #     return popped
+
+    """Heapify function to maintain the heap property.""" 
+    def minHeapify(self, i, n):
+        smallest = i
+        left = 2 * i + 1
+        right = 2 * i + 2
+
+        if left < n and self.better(self.a[left], self.a[smallest]):
+            smallest = left
+        if right < n and self.better(self.a[right], self.a[smallest]):
+            smallest = right
+        if smallest != i:
+            self.a[i], self.a[smallest] = self.a[smallest], self.a[i]
+            self.minHeapify(smallest, n)
+
+    """Search for an element in the Min Heap."""
+    def search(self, element):
+        for j in self.a:
+            if j == element:
+                return True
+        return False
+
+    def getMin(self):
+        return self.a[0] if self.a else None
+    
+    def popMin(self):
+        """Remove and return the root (min) node. Return sentinel if empty."""
+        if not self.a:
+            return [[-1, -1], -1, -1, [-1, -1]]
         root = self.a[0]
         if len(self.a) == 1:
             self.a.pop()
@@ -230,6 +325,60 @@ def pathBacktrack(nodes):
         # try to get parent if available at index 2
         try:
             possible_parent = n[2]
+            if isinstance(possible_parent, (list, tuple)) and len(possible_parent) == 2 and all(isinstance(x, int) for x in possible_parent):
+                parent = tuple(possible_parent)
+        except Exception:
+            parent = None
+
+        # fallback: if node itself is a pair like ([i,j], cost), coord may be n[0]
+        if coord is None and isinstance(n, (list, tuple)) and len(n) >= 1:
+            maybe = n[0]
+            if isinstance(maybe, (list, tuple)) and len(maybe) == 2 and all(isinstance(x, int) for x in maybe):
+                coord = tuple(maybe)
+
+        if coord is not None:
+            parent_map[coord] = parent if parent is not None else (-1, -1)
+
+    # determine goal coordinate from last node in nodes (best-effort)
+    last = nodes[-1]
+    try:
+        goal_coord = tuple(last[0])
+    except Exception:
+        # if can't determine, abort
+        print("No path found")
+        return
+
+    # reconstruct path using parent_map
+    path = []
+    cur = goal_coord
+    while cur != (-1, -1):
+        path.insert(0, [cur[0], cur[1]])
+        cur = parent_map.get(cur, (-1, -1))
+
+    return path
+
+def pathBacktrack_Astar(nodes):
+    # build map coord -> parent (tolerant terhadap beberapa format node)
+    parent_map = {}
+    if not nodes:
+        print("No path found")
+        return
+
+    for n in nodes:
+        # n may be: [[i,j], cost, [pi,pj]]  or  ([i,j], cost)  or other variants
+        coord = None
+        parent = None
+        try:
+            # try canonical: n[0] -> coord
+            possible_coord = n[0]
+            if isinstance(possible_coord, (list, tuple)) and len(possible_coord) == 2 and all(isinstance(x, int) for x in possible_coord):
+                coord = tuple(possible_coord)
+        except Exception:
+            coord = None
+
+        # try to get parent if available at index 2
+        try:
+            possible_parent = n[3]
             if isinstance(possible_parent, (list, tuple)) and len(possible_parent) == 2 and all(isinstance(x, int) for x in possible_parent):
                 parent = tuple(possible_parent)
         except Exception:

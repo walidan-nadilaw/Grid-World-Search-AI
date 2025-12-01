@@ -20,7 +20,7 @@ def UCS(row, col, grid, start, goal):
     explored = []  # format: [[row node, col node], bobot kumulatif, [row prev, col prev], urutan queue]
 
     # Priority queue (PQ) untuk menyimpan daftar node yang sudah dienqueue tapi belom divisit
-    priorityQueue = MinHeap_NumbVal()
+    priorityQueue = MinHeap_UCS()
     
     # inisialisasi algoritma ucs
     enqueuedWeight[start[0]][start[1]] = 0      # menyatakan bahwa bobot kumulatif start adalah 0
@@ -79,7 +79,7 @@ def UCS(row, col, grid, start, goal):
     current, peakMemory = tracemalloc.get_traced_memory()
 
     # return n node explored, path cost, path, duration
-    return len(explored), explored.pop(), path, elapsedTime, peakMemory
+    return len(explored), explored[len(explored)-1], path, elapsedTime, peakMemory
 
 
 # Debug Purpose
