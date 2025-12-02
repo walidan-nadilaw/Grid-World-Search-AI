@@ -55,30 +55,31 @@ def eightD(node1, node2): #return float jarak antara tetangga
     if(node1[1] == node2[1]): return 1
     return (2) ** 0.5
 
-class MinHeap_NumbVal:
-    def __init__(self):
-        self.a = []         # list yang setiap elemennya berisi [[node_i, node_j], value, [parent_i, parent_j], order]
-        self.counter = 0    # tie-breaker timestamp
+class Node:
+    def __init__(self, cur_i, cur_j, par_i, par_j, cum_weight, heu_val, arrival_order):
+        self.cur_coord = [cur_i, cur_j]
+        self.par_coord = [par_i, par_j]
+        self.cum_weight = cum_weight        # g(n)  backward cost: weight kumulatif
+        self.heu_val = heu_val              # h(n)  forward cost: heuristic value
+        self.arrival_order = arrival_order
 
-    def better(self, x, y):
-        if x[1] < y[1]:
-            return True
-        if x[1] == y[1] and x[3] < y[3]:
-            return True
-        return False
+class MinHeap:
+    def __init__(self):
+        self.array = []     
+
+    def better(self, node1, node2):
+        return
 
     """Insert a new element into the Min Heap."""
     def insert(self, node):
-        wrapped = [node[0], node[1], node[2], self.counter]
-        self.counter += 1
 
-        self.a.append(wrapped)
-        i = len(self.a) - 1
+        self.array.append(node)
+        i = len(self.array) - 1
         while i > 0:
             parent_index = (i - 1) // 2
             # Tambahkan logika untuk membandingkan node dengan biaya yang sama
-            if (self.better(self.a[i], self.a[parent_index])):
-                self.a[i], self.a[parent_index] = self.a[parent_index], self.a[i]
+            if (self.better(self.array[i], self.array[parent_index])):
+                self.array[i], self.array[parent_index] = self.array[parent_index], self.array[i]
                 i = parent_index
             else:
                 break
@@ -86,25 +87,25 @@ class MinHeap_NumbVal:
     """Delete a specific element from the Min Heap."""
     def delete(self, value):
         i = -1
-        for j in range(len(self.a)):
-            if self.a[j][1] == value:
+        for j in range(len(self.array)):
+            if self.array[j].cur_coord == value:
                 i = j
                 break
         if i == -1:
-            return [[-1, -1], -1, [-1, -1]]
-        popped = self.a[i]
-        self.a[i] = self.a[-1]
-        self.a.pop()
+            return Node(-1, -1, -1, -1, -1, -1, -1)
+        popped = self.array[i]
+        self.array[i] = self.array[-1]
+        self.array.pop()
         while True:
             left = 2 * i + 1
             right = 2 * i + 2
             smallest = i
-            if left < len(self.a) and self.better(self.a[left], self.a[smallest]):
+            if left < len(self.array) and self.better(self.array[left], self.array[smallest]):
                 smallest = left
-            if right < len(self.a) and self.better(self.a[right], self.a[smallest]):
+            if right < len(self.array) and self.better(self.array[right], self.array[smallest]):
                 smallest = right
             if smallest != i:
-                self.a[i], self.a[smallest] = self.a[smallest], self.a[i]
+                self.array[i], self.array[smallest] = self.array[smallest], self.array[i]
                 i = smallest
             else:
                 break
@@ -116,39 +117,39 @@ class MinHeap_NumbVal:
         left = 2 * i + 1
         right = 2 * i + 2
 
-        if left < n and self.better(self.a[left], self.a[smallest]):
+        if left < n and self.better(self.array[left], self.array[smallest]):
             smallest = left
-        if right < n and self.better(self.a[right], self.a[smallest]):
+        if right < n and self.better(self.aarray[right], self.array[smallest]):
             smallest = right
         if smallest != i:
-            self.a[i], self.a[smallest] = self.a[smallest], self.a[i]
+            self.a[i], self.array[smallest] = self.array[smallest], self.array[i]
             self.minHeapify(smallest, n)
 
     """Search for an element in the Min Heap."""
     def search(self, element):
-        for j in self.a:
+        for j in self.array:
             if j == element:
                 return True
         return False
 
     def getMin(self):
-        return self.a[0] if self.a else None
+        return self.array[0] if self.array else None
     
     def popMin(self):
         """Remove and return the root (min) node. Return sentinel if empty."""
-        if not self.a:
-            return [[-1, -1], -1, [-1, -1]]
-        root = self.a[0]
-        if len(self.a) == 1:
-            self.a.pop()
+        if not self.array:
+            return Node(-1, -1, -1, -1, -1, -1, -1)
+        root = self.array[0]
+        if len(self.array) == 1:
+            self.array.pop()
             return root
         # pindahkan last ke root lalu heapify
-        self.a[0] = self.a.pop()
-        self.minHeapify(0, len(self.a))
+        self.array[0] = self.array.pop()
+        self.minHeapify(0, len(self.array))
         return root
 
     def printHeap(self):
-        print("Min Heap:", self.a)
+        print("Min Heap:", self.array)
 
 def printBacktrack(nodes):
     # build map coord -> parent (tolerant terhadap beberapa format node)
