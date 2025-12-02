@@ -152,10 +152,10 @@ class MinHeap:
     def printHeap(self):
         print("Min Heap:", self.array)
 
-def pathBacktrack(exploredList: list[Node]) -> list[Node]:
+def pathBacktrack(exploredList: list[Node]) -> list[int]:
 
     NodeCount :int = len(exploredList)
-    path :list[Node] = []
+    path :list[int] = []
     currentNode :list[int]= exploredList[-1].cur_coord
 
     for i in range(NodeCount-1, -1, -1):
@@ -168,3 +168,26 @@ def pathBacktrack(exploredList: list[Node]) -> list[Node]:
     return path[::-1]  # reverse path
     # Slicing Time: 3.000000106112566e-06
     # Reversing Time: 7.999999979801942e-06
+
+def printPath(path):
+    for i in range(len(path)):
+        print(f"({path[i][0]},{path[i][1]})", end="")
+        if i < len(path) - 1:
+            print(" -> ", end="")
+    print()
+
+def printGridPath(grid, path, row, col):
+    printGrid = [[int for _ in range(col)] for _ in range(row)]
+
+    for i in range(row):
+        for j in range(col):
+            printGrid[i][j] = grid[i][j]
+    
+
+    for node in path:
+        printGrid[node[0]][node[1]] = 'P'
+
+    for i in range(row):
+        for j in range(col):
+            print(printGrid[i][j], end=' ')
+        print()
