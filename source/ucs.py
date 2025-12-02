@@ -8,8 +8,6 @@ class Node_UCS(Node):
         # heu_val diatur ke -1 (tidak digunakan)
 
 class minHeap_UCS(MinHeap):
-    def __init__(self):
-        super().__init__()
     
     def compareEntry(self, node1, node2):
         if node1.cum_weight < node2.cum_weight:
@@ -112,4 +110,4 @@ def UCS(row, col, grid, start, goal):
 #     if not explored or explored[-1].cur_coord != goal:
 #         print("No path found")
 #     else:
-#         printBacktrack(explored)
+#         printPath(pathBacktrack(explored))

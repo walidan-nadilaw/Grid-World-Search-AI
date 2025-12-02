@@ -7,10 +7,10 @@ if __name__ == "__main__":
 
     # Membaca input grid dari file .txt
     # Parameter fungsi inputGrid adalah nama dataset (tanpa .txt)
-    row, col, grid, start, goal = inputGrid('input7')
+    row, col, grid, start, goal = inputGrid('input500x500')
 
     # Mencetak grid yang dibaca
-    printGridPath(grid, [], row, col)
+    # printGridPath(grid, [], row, col)
 
 
 #======= BFS =======
@@ -20,17 +20,17 @@ if __name__ == "__main__":
     print("BFS explore\t:", nExp_BFS)
     print("BFS cost\t:", pathCost_BFS)
 
-    print("BFS path\t: ", end='')
-    if(type(path_BFS) is str): print(path_BFS)  # ketika tidak ada path dari start menuju goal
-    else: printPath(path_BFS)                   # ketika ada path dari start menuju goal
+    # print("BFS path\t: ", end='')
+    # if(type(path_BFS) is str): print(path_BFS)  # ketika tidak ada path dari start menuju goal
+    # else: printPath(path_BFS)                   # ketika ada path dari start menuju goal
     
     print(f"BFS time\t: {time_BFS:.6f} seconds")
     print("BFS memory\t:", memory_BFS / 1024, "KB")
 
-    path_BFS.pop(0)
-    path_BFS.pop()
-    printGridPath(grid, path_BFS, row, col)
-    print()
+    # path_BFS.pop(0)
+    # path_BFS.pop()
+    # printGridPath(grid, path_BFS, row, col)
+    # print()
 
 
 #======= UCS =======
@@ -40,36 +40,35 @@ if __name__ == "__main__":
     print("UCS explore\t:", nExp_UCS)
     print("UCS cost\t:", pathCost_UCS)
     
-    print("UCS path\t: ", end='')
-    if(type(path_UCS) is str): print(path_UCS)  # ketika tidak ada path dari start menuju goal
-    else: printPath(path_UCS)                   # ketika ada path dari start menuju goal
+    # print("UCS path\t: ", end='')
+    # if(type(path_UCS) is str): print(path_UCS)  # ketika tidak ada path dari start menuju goal
+    # else: printPath(path_UCS)                   # ketika ada path dari start menuju goal
     
     print(f"UCS time\t: {time_UCS:.6f} seconds")
     print("UCS memory\t:", memory_UCS / 1024, "KB")
 
-    path_UCS.pop(0)
-    path_UCS.pop()
-    printGridPath(grid, path_UCS, row, col)
-    print()
+    # path_UCS.pop(0)
+    # path_UCS.pop()
+    # printGridPath(grid, path_UCS, row, col)
+    # print()
 
 
 #======= A STAR =======
-    # nExp_Astar, pathCost_Astar, path_Astar, time_Astar, memory_Astar = Astar(row, col, grid, start, goal)
+    nExp_Astar, pathCost_Astar, path_Astar, time_Astar, memory_Astar = astar(row, col, grid, start, goal)
 
     # Mencetak hasil
-    # print("Astar explore\t:", nExp_Astar)
-    # print("Astar cost\t:", pathCost_Astar[1])
+    print("A* explore\t:", nExp_Astar)
+    print("A* cost\t\t:", pathCost_Astar)
 
-    # print("Astar path\t: ", end='')
+    # print("A* path\t\t: ", end='')
     # if(type(path_Astar) is str): print(path_Astar)  # ketika tidak ada path dari start menuju goal
     # else: printPath(path_Astar)                   # ketika ada path dari start menuju goal
     
-    # print(f"Astar time\t: {time_Astar:.6f} seconds")
-    # print("Astar memory\t:", memory_Astar / 1024, "KB")
+    print(f"A* time\t\t: {time_Astar:.6f} seconds")
+    print("A* memory\t:", memory_Astar / 1024, "KB")
 
-    # path_Astar.pop(0)
-    # path_Astar.pop()
-
+    # path_UCS.pop(0)
+    # path_UCS.pop()
     # printGridPath(grid, path_Astar, row, col)
     # print()
     
