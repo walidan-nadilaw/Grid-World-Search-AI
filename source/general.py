@@ -152,7 +152,7 @@ class MinHeap:
     def printHeap(self):
         print("Min Heap:", self.array)
 
-def printPath(exploredList: list[Node]) -> list[Node]:
+def pathBacktrack(exploredList: list[Node]) -> list[Node]:
 
     NodeCount :int = len(exploredList)
     path :list[Node] = []
