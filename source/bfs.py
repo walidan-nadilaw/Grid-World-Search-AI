@@ -8,8 +8,6 @@ class Node_BFS(Node):
         # heu_val diatur ke -1 (tidak digunakan)
 
 class minHeap_BFS(MinHeap):
-    def __init__(self):
-        super().__init__()
     
     def compareEntry(self, node1, node2):
         if node1.arrival_order < node2.arrival_order:
@@ -108,8 +106,8 @@ def BFS(row, col, grid, start, goal):
 
 
 # Debug Purpose
-def printBFS(explored, goal):
-    if not explored or explored[-1][0] != goal:
-        print("No path found")
-    else:
-        printBacktrack(explored)
+# def printBFS(explored, goal):
+#     if not explored or explored[-1][0] != goal:
+#         print("No path found")
+#     else:
+#         printPath(pathBacktrack(explored))

@@ -86,7 +86,7 @@ class MinHeap:
                 break
 
     """Delete a specific element from the Min Heap."""
-    def delete(self, value):
+    def delete(self, value: list[int]):
         i = -1
         for j in range(len(self.array)):
             if self.array[j].cur_coord == value:
@@ -126,12 +126,12 @@ class MinHeap:
             self.array[i], self.array[smallest] = self.array[smallest], self.array[i]
             self.minHeapify(smallest, n)
 
-    """Search for an element in the Min Heap."""
-    def search(self, element):
+    """Search for node by coordinate in the Min Heap."""
+    def search(self, coordinate):
         for j in self.array:
-            if j == element:
-                return True
-        return False
+            if j.cur_coord == coordinate:
+                return j
+        return None
 
     def getMin(self):
         return self.array[0] if self.array else None
