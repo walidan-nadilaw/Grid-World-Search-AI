@@ -2,6 +2,20 @@ from general import *
 import time
 import tracemalloc
 
+class Node_BFS(Node):
+    def __init__(self, cur_coord, par_coord, cum_weight, arrival_order):
+        super().__init__(cur_coord, par_coord, cum_weight, -1, arrival_order)
+        # heu_val diatur ke -1 (tidak digunakan)
+
+class minHeap_BFS(MinHeap):
+    def __init__(self):
+        super().__init__()
+    
+    def compareEntry(self, node1, node2):
+        if node1.arrival_order < node2.arrival_order:
+            return True
+        else: return False
+
 def BFS(row, col, grid, start, goal):
     # Memulai perhitungan memori
     tracemalloc.start()
@@ -10,50 +24,46 @@ def BFS(row, col, grid, start, goal):
     startTime = time.perf_counter()
     
     # Menyimpan bobot kumulatif terbaik untuk setiap node
-    enqueuedWeight = [[float('inf') for _ in range(col)] for _ in range(row)] # matrix row x col
+    visitedGrid = [[float('inf') for _ in range(col)] for _ in range(row)] # matrix row x col
     for i in range(row): 
         for j in range(col): 
-            enqueuedWeight[i][j] = -1
+            visitedGrid[i][j] = -1
     # -1 menyatakan node belum pernah dienqueue
     
     # List untuk menyimpan semua node yang sudah dieksplorasi
     explored = []  # format: [[row node, col node], bobot kumulatif, [row prev, col prev], urutan queue]
 
     # Priority queue (PQ) untuk menyimpan daftar node yang sudah dienqueue tapi belom divisit
-    priorityQueue = MinHeap_NumbVal()
-    
+    priorityQueue = minHeap_BFS()
+    arrival_order = 0
+
     # inisialisasi algoritma BFS
-    enqueuedWeight[start[0]][start[1]] = 0      # menyatakan bahwa bobot kumulatif start adalah 0
-    priorityQueue.insert([[start[0], start[1]], 0, [-1, -1]]) # memasukkan node start ke PQ
+    toInsert = Node_BFS([0, 0], [-1, -1], 0, arrival_order)
+    priorityQueue.insert(toInsert) # memasukkan node start ke PQ
+    arrival_order += 1
     explore = priorityQueue.popMin()            # mengvisit node terkecil pada PQ, disini berarti node start
 
-    # Error handling ketika node start tidak ada
-    # jika queue kosong atau sentinel, keluar
-    if explore == [[-1, -1], -1, [-1, -1]]:
-        print("No path found")
-        return
-
     # Selama masih ada node yang bisa divisit dan node yang divisit bukan node goal, enqueue tetangga
-    while(explore[0] != goal):
+    while(explore.cur_coord != goal):
+        visitedGrid[explore.cur_coord[0]][explore.cur_coord[0]] = 1
         
         # iterasi terhadap semua tetangga dari node yang sedang diexplore (E)
-        for neighbor in getNeighbor(explore[0][0], explore[0][1], row, col, grid):
+        for neighbor in getNeighbor(explore.cur_coord, row, col, grid):
             
             # Tetangga tidak perlu di enqueue ketika:
             # Tetangga berupa '#' atau dinding
             # Tetangga sudah dimasukkan sebelumnya
-            if grid[neighbor[0]][neighbor[1]] == '#' or enqueuedWeight[neighbor[0]][neighbor[1]] != -1: 
+            if grid[neighbor[0]][neighbor[1]] == '#' or visitedGrid[neighbor[0]][neighbor[1]] != -1: 
                 continue
             
             # Bobot tetangga adalah bobot kumulatif node E ditambah jarak node E ke tetangga
-            neighbor_d = explore[1] + eightD(explore[0], neighbor)
+            neighbor_cum_weight = explore.cum_weight + eightD(explore.cur_coord, neighbor)
 
-            if neighbor[0] > neighbor[1]: 
-                enqueuedWeight[neighbor[0]][neighbor[1]] = neighbor[0]
-            else:
-                enqueuedWeight[neighbor[0]][neighbor[1]] = neighbor[1]
+            toInsert = Node_BFS(neighbor, explore, neighbor_cum_weight, arrival_order)
+            arrival_order += 1
+
             # Memasukkan tetangga ke PQ
-            priorityQueue.insert([[neighbor[0], neighbor[1]], neighbor_d, [explore[0][0], explore[0][1]]])
+            priorityQueue.insert(toInsert)
         
         
         # Setelah node E selesai dieksplorasi maka masukkan ke list explored
@@ -64,16 +74,16 @@ def BFS(row, col, grid, start, goal):
 
         # Kasus: PQ kosong tapi belum eksplorasi node goal
         # Artinya path tidak ditemukan
-        if explore == [[-1, -1], -1, [-1, -1]]:
+        if explore.cur_coord == [-1, -1]:
             break
     
     # tadi belum masukin goal ke explored
     # jika goal dipop, tambahkan ke explored agar backtrack bekerja
-    if explore != [[-1, -1], -1, [-1, -1]] and explore[0] == goal:
+    if explore.cur_coord == goal:
         explored.append(explore)
 
     # Menyusun path
-    if not explored or explored[-1][0] != goal:
+    if not explored or explored[-1].cur_coord != goal:
         path = "No path found"
     else:
         path = pathBacktrack(explored)
