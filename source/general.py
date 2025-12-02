@@ -120,10 +120,10 @@ class MinHeap:
 
         if left < n and self.compareEntry(self.array[left], self.array[smallest]):
             smallest = left
-        if right < n and self.compareEntry(self.aarray[right], self.array[smallest]):
+        if right < n and self.compareEntry(self.array[right], self.array[smallest]):
             smallest = right
         if smallest != i:
-            self.a[i], self.array[smallest] = self.array[smallest], self.array[i]
+            self.array[i], self.array[smallest] = self.array[smallest], self.array[i]
             self.minHeapify(smallest, n)
 
     """Search for an element in the Min Heap."""
@@ -139,7 +139,7 @@ class MinHeap:
     def popMin(self):
         """Remove and return the root (min) node. Return sentinel if empty."""
         if not self.array:
-            return Node(-1, -1, -1, -1, -1, -1, -1)
+            return Node([-1, -1], [-1, -1], -1, -1, -1)
         root = self.array[0]
         if len(self.array) == 1:
             self.array.pop()

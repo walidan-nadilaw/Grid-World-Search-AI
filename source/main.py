@@ -7,7 +7,7 @@ if __name__ == "__main__":
 
     # Membaca input grid dari file .txt
     # Parameter fungsi inputGrid adalah nama dataset (tanpa .txt)
-    row, col, grid, start, goal = inputGrid('input500x500')
+    row, col, grid, start, goal = inputGrid('input5')
 
     # Mencetak grid yang dibaca
     # for i in range(row):
@@ -22,9 +22,10 @@ if __name__ == "__main__":
 
     # Mencetak hasil
     print("BFS explore\t:", nExp_BFS)
-    print("BFS cost\t:", pathCost_BFS[1])
+    print("BFS cost\t:", pathCost_BFS.cum_weight)
 
-    print("BFS path\t: ", end='')
+    print("BFS path\t: ", path_BFS)
+    # print("BFS path\t: ", end='')
     # if(type(path_BFS) is str): print(path_BFS)  # ketika tidak ada path dari start menuju goal
     # else: printPath(path_BFS)                   # ketika ada path dari start menuju goal
     

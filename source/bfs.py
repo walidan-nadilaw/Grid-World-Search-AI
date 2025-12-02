@@ -31,21 +31,21 @@ def BFS(row, col, grid, start, goal):
     # -1 menyatakan node belum pernah dienqueue
     
     # List untuk menyimpan semua node yang sudah dieksplorasi
-    explored = []  # format: [[row node, col node], bobot kumulatif, [row prev, col prev], urutan queue]
+    explored = []  # isinya dalam format class Node_BFS
 
     # Priority queue (PQ) untuk menyimpan daftar node yang sudah dienqueue tapi belom divisit
     priorityQueue = minHeap_BFS()
     arrival_order = 0
 
     # inisialisasi algoritma BFS
-    toInsert = Node_BFS([0, 0], [-1, -1], 0, arrival_order)
+    toInsert = Node_BFS(start, [-1, -1], 0, arrival_order)
     priorityQueue.insert(toInsert) # memasukkan node start ke PQ
     arrival_order += 1
     explore = priorityQueue.popMin()            # mengvisit node terkecil pada PQ, disini berarti node start
 
     # Selama masih ada node yang bisa divisit dan node yang divisit bukan node goal, enqueue tetangga
     while(explore.cur_coord != goal):
-        visitedGrid[explore.cur_coord[0]][explore.cur_coord[0]] = 1
+        visitedGrid[explore.cur_coord[0]][explore.cur_coord[1]] = 1
         
         # iterasi terhadap semua tetangga dari node yang sedang diexplore (E)
         for neighbor in getNeighbor(explore.cur_coord, row, col, grid):
@@ -59,7 +59,7 @@ def BFS(row, col, grid, start, goal):
             # Bobot tetangga adalah bobot kumulatif node E ditambah jarak node E ke tetangga
             neighbor_cum_weight = explore.cum_weight + eightD(explore.cur_coord, neighbor)
 
-            toInsert = Node_BFS(neighbor, explore, neighbor_cum_weight, arrival_order)
+            toInsert = Node_BFS(neighbor, explore.cur_coord, neighbor_cum_weight, arrival_order)
             arrival_order += 1
 
             # Memasukkan tetangga ke PQ
@@ -86,14 +86,15 @@ def BFS(row, col, grid, start, goal):
     if not explored or explored[-1].cur_coord != goal:
         path = "No path found"
     else:
-        path = pathBacktrack(explored)
+        path = "There's path found"
+        # path = pathBacktrack(explored)
 
     # durasi fungsi = waktu saat ini - waktu mulai
     elapsedTime = time.perf_counter() - startTime
     current, peakMemory = tracemalloc.get_traced_memory()
 
     # return n node explored, path cost, path, duration
-    return len(explored), explored.pop(), path, elapsedTime, peakMemory
+    return len(explored), explored[-1], path, elapsedTime, peakMemory
 
 
 # Debug Purpose
