@@ -184,6 +184,7 @@ def pathBacktrack(exploredList: list[Node]) -> list[int]:
         if i == len(path)-1:
             print(path[i], end=" ")
         else: print(f"-> {path[i]}", end=" ")        else: print(f"-> {path[i]}", end=" ")
+        else: print(f"-> {path[i]}", end=" ")
 =======
     return path[::-1]  # reverse path
     # Slicing Time: 3.000000106112566e-06

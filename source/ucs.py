@@ -92,7 +92,7 @@ def printUCS(explored, goal):
     if not explored or explored[-1][0] != goal:
         print("No path found")
     else:
-        printBacktrack(explored)        printBacktrack(explored)
+        printBacktrack(explored)
 =======
 # def printUCS(explored, goal):
 #     if not explored or explored[-1].cur_coord != goal:

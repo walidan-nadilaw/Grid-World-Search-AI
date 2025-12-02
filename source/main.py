@@ -45,10 +45,6 @@ if __name__ == "__main__":
     print(f"BFS time\t: {time_BFS:.6f} seconds")
     print("BFS memory\t:", memory_BFS / 1024, "KB")
 
-    # path_BFS.pop(0)
-    # path_BFS.pop()
-    # # printGridPath(grid, path_BFS, row, col)
-    # print()
     path_BFS.pop(0)
     path_BFS.pop()
     printGridPath(grid, path_BFS, row, col)
@@ -75,10 +71,6 @@ if __name__ == "__main__":
     # print(f"UCS time\t: {time_UCS:.6f} seconds")
     # print("UCS memory\t:", memory_UCS / 1024, "KB")
 
-    # path_UCS.pop(0)
-    # path_UCS.pop()
-    # printGridPath(grid, path_UCS, row, col)
-    # print()
     path_UCS.pop(0)
     path_UCS.pop()
     printGridPath(grid, path_UCS, row, col)
