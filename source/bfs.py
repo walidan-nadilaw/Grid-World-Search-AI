@@ -86,8 +86,8 @@ def BFS(row, col, grid, start, goal):
     if not explored or explored[-1].cur_coord != goal:
         path = "No path found"
     else:
-        path = "There's path found"
-        # path = pathBacktrack(explored)
+        # path = "There's path found"
+        path = pathBacktrack(explored)
 
     # durasi fungsi = waktu saat ini - waktu mulai
     elapsedTime = time.perf_counter() - startTime

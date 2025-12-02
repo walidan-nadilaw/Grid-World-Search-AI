@@ -72,6 +72,10 @@ def UCS(row, col, grid, start, goal):
     if not explored or explored[-1][0] != goal:
         path = "No path found"
     else:
+<<<<<<< Updated upstream
+=======
+        # path = "There's path found"
+>>>>>>> Stashed changes
         path = pathBacktrack(explored)
 
     # durasi fungsi = waktu saat ini - waktu mulai
@@ -83,8 +87,16 @@ def UCS(row, col, grid, start, goal):
 
 
 # Debug Purpose
+<<<<<<< Updated upstream
 def printUCS(explored, goal):
     if not explored or explored[-1][0] != goal:
         print("No path found")
     else:
-        printBacktrack(explored)
+        printBacktrack(explored)        printBacktrack(explored)
+=======
+# def printUCS(explored, goal):
+#     if not explored or explored[-1].cur_coord != goal:
+#         print("No path found")
+#     else:
+#         printBacktrack(explored)
+>>>>>>> Stashed changes

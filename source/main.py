@@ -7,6 +7,7 @@ if __name__ == "__main__":
 
     # Membaca input grid dari file .txt
     # Parameter fungsi inputGrid adalah nama dataset (tanpa .txt)
+<<<<<<< Updated upstream
     row, col, grid, start, goal = inputGrid('input5')
 
     # Mencetak grid yang dibaca
@@ -15,6 +16,12 @@ if __name__ == "__main__":
     #         print(grid[i][j], end=' ')
     #     print()
     # print()
+=======
+    row, col, grid, start, goal = inputGrid('input7')
+
+    # Mencetak grid yang dibaca
+    printGridPath(grid, [], row, col)
+>>>>>>> Stashed changes
 
 
 #======= BFS =======
@@ -24,10 +31,16 @@ if __name__ == "__main__":
     print("BFS explore\t:", nExp_BFS)
     print("BFS cost\t:", pathCost_BFS.cum_weight)
 
+<<<<<<< Updated upstream
     print("BFS path\t: ", path_BFS)
     # print("BFS path\t: ", end='')
     # if(type(path_BFS) is str): print(path_BFS)  # ketika tidak ada path dari start menuju goal
     # else: printPath(path_BFS)                   # ketika ada path dari start menuju goal
+=======
+    print("BFS path\t: ", end='')
+    if(type(path_BFS) is str): print(path_BFS)  # ketika tidak ada path dari start menuju goal
+    else: printPath(path_BFS)                   # ketika ada path dari start menuju goal
+>>>>>>> Stashed changes
     
     print(f"BFS time\t: {time_BFS:.6f} seconds")
     print("BFS memory\t:", memory_BFS / 1024, "KB")
@@ -36,6 +49,10 @@ if __name__ == "__main__":
     # path_BFS.pop()
     # # printGridPath(grid, path_BFS, row, col)
     # print()
+    path_BFS.pop(0)
+    path_BFS.pop()
+    printGridPath(grid, path_BFS, row, col)
+    print()
 
 
 #======= UCS =======
@@ -45,9 +62,15 @@ if __name__ == "__main__":
     # print("UCS explore\t:", nExp_UCS)
     # print("UCS cost\t:", pathCost_UCS[1])
 
+<<<<<<< Updated upstream
     # print("UCS path\t: ", end='')
     # # if(type(path_UCS) is str): print(path_UCS)  # ketika tidak ada path dari start menuju goal
     # # else: printPath(path_UCS)                   # ketika ada path dari start menuju goal
+=======
+    print("UCS path\t: ", end='')
+    if(type(path_UCS) is str): print(path_UCS)  # ketika tidak ada path dari start menuju goal
+    else: printPath(path_UCS)                   # ketika ada path dari start menuju goal
+>>>>>>> Stashed changes
     
     # print(f"UCS time\t: {time_UCS:.6f} seconds")
     # print("UCS memory\t:", memory_UCS / 1024, "KB")
@@ -56,6 +79,10 @@ if __name__ == "__main__":
     # path_UCS.pop()
     # printGridPath(grid, path_UCS, row, col)
     # print()
+    path_UCS.pop(0)
+    path_UCS.pop()
+    printGridPath(grid, path_UCS, row, col)
+    print()
 
 
 #======= A STAR =======

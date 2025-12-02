@@ -152,6 +152,7 @@ class MinHeap:
     def printHeap(self):
         print("Min Heap:", self.array)
 
+<<<<<<< Updated upstream
 def printPath(exploredList: list[Node]) -> None:
     """
         ambil Node paling belakang
@@ -163,6 +164,12 @@ def printPath(exploredList: list[Node]) -> None:
 
     pathLong :int = len(exploredList)
     path :list[Node] = []
+=======
+def pathBacktrack(exploredList: list[Node]) -> list[int]:
+
+    NodeCount :int = len(exploredList)
+    path :list[int] = []
+>>>>>>> Stashed changes
     currentNode :list[int]= exploredList[-1].cur_coord
 
     for i in range(pathLong-1, -1, -1):
@@ -172,7 +179,36 @@ def printPath(exploredList: list[Node]) -> None:
             if currentNode == [-1, -1]:
                 break
 
+<<<<<<< Updated upstream
     for i in range(len(path)-1, -1, -1):
         if i == len(path)-1:
             print(path[i], end=" ")
-        else: print(f"-> {path[i]}", end=" ")
+        else: print(f"-> {path[i]}", end=" ")        else: print(f"-> {path[i]}", end=" ")
+=======
+    return path[::-1]  # reverse path
+    # Slicing Time: 3.000000106112566e-06
+    # Reversing Time: 7.999999979801942e-06
+
+def printPath(path):
+    for i in range(len(path)):
+        print(f"({path[i][0]},{path[i][1]})", end="")
+        if i < len(path) - 1:
+            print(" -> ", end="")
+    print()
+
+def printGridPath(grid, path, row, col):
+    printGrid = [[int for _ in range(col)] for _ in range(row)]
+
+    for i in range(row):
+        for j in range(col):
+            printGrid[i][j] = grid[i][j]
+    
+
+    for node in path:
+        printGrid[node[0]][node[1]] = 'P'
+
+    for i in range(row):
+        for j in range(col):
+            print(printGrid[i][j], end=' ')
+        print()
+>>>>>>> Stashed changes
