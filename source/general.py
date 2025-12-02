@@ -21,7 +21,8 @@ def searchChar(char, row, col, grid):
                 node = [i, j]
                 return node
 
-def getNeighbor(i, j, row, col, grid): #return list of list valid neighbor coordinates
+def getNeighbor(coor, row, col, grid): #return list of list valid neighbor coordinates
+    i, j = coor
     neighbor = []
     if i > 0:
         if grid[i-1][j] != '#':    neighbor.append([i-1, j])   # utara
@@ -56,9 +57,9 @@ def eightD(node1, node2): #return float jarak antara tetangga
     return (2) ** 0.5
 
 class Node:
-    def __init__(self, cur_i, cur_j, par_i, par_j, cum_weight, heu_val, arrival_order):
-        self.cur_coord = [cur_i, cur_j]
-        self.par_coord = [par_i, par_j]
+    def __init__(self, cur_coord, par_coord, cum_weight, heu_val, arrival_order):
+        self.cur_coord = cur_coord
+        self.par_coord = par_coord
         self.cum_weight = cum_weight        # g(n)  backward cost: weight kumulatif
         self.heu_val = heu_val              # h(n)  forward cost: heuristic value
         self.arrival_order = arrival_order
@@ -67,7 +68,7 @@ class MinHeap:
     def __init__(self):
         self.array = []     
 
-    def better(self, node1, node2):
+    def compareEntry(self, node1, node2):
         return
 
     """Insert a new element into the Min Heap."""
@@ -78,7 +79,7 @@ class MinHeap:
         while i > 0:
             parent_index = (i - 1) // 2
             # Tambahkan logika untuk membandingkan node dengan biaya yang sama
-            if (self.better(self.array[i], self.array[parent_index])):
+            if (self.compareEntry(self.array[i], self.array[parent_index])):
                 self.array[i], self.array[parent_index] = self.array[parent_index], self.array[i]
                 i = parent_index
             else:
@@ -100,9 +101,9 @@ class MinHeap:
             left = 2 * i + 1
             right = 2 * i + 2
             smallest = i
-            if left < len(self.array) and self.better(self.array[left], self.array[smallest]):
+            if left < len(self.array) and self.compareEntry(self.array[left], self.array[smallest]):
                 smallest = left
-            if right < len(self.array) and self.better(self.array[right], self.array[smallest]):
+            if right < len(self.array) and self.compareEntry(self.array[right], self.array[smallest]):
                 smallest = right
             if smallest != i:
                 self.array[i], self.array[smallest] = self.array[smallest], self.array[i]
@@ -117,9 +118,9 @@ class MinHeap:
         left = 2 * i + 1
         right = 2 * i + 2
 
-        if left < n and self.better(self.array[left], self.array[smallest]):
+        if left < n and self.compareEntry(self.array[left], self.array[smallest]):
             smallest = left
-        if right < n and self.better(self.aarray[right], self.array[smallest]):
+        if right < n and self.compareEntry(self.aarray[right], self.array[smallest]):
             smallest = right
         if smallest != i:
             self.a[i], self.array[smallest] = self.array[smallest], self.array[i]
