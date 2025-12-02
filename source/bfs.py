@@ -2,7 +2,7 @@ from general import *
 import time
 import tracemalloc
 
-def UCS(row, col, grid, start, goal):
+def BFS(row, col, grid, start, goal):
     # Memulai perhitungan memori
     tracemalloc.start()
     
@@ -22,16 +22,16 @@ def UCS(row, col, grid, start, goal):
     # Priority queue (PQ) untuk menyimpan daftar node yang sudah dienqueue tapi belom divisit
     priorityQueue = MinHeap_NumbVal()
     
-    # inisialisasi algoritma ucs
+    # inisialisasi algoritma BFS
     enqueuedWeight[start[0]][start[1]] = 0      # menyatakan bahwa bobot kumulatif start adalah 0
     priorityQueue.insert([[start[0], start[1]], 0, [-1, -1]]) # memasukkan node start ke PQ
     explore = priorityQueue.popMin()            # mengvisit node terkecil pada PQ, disini berarti node start
 
     # Error handling ketika node start tidak ada
     # jika queue kosong atau sentinel, keluar
-    # if explore == [[-1, -1], -1, [-1, -1]]:
-    #     print("No path found")
-    #     return
+    if explore == [[-1, -1], -1, [-1, -1]]:
+        print("No path found")
+        return
 
     # Selama masih ada node yang bisa divisit dan node yang divisit bukan node goal, enqueue tetangga
     while(explore[0] != goal):
@@ -48,9 +48,13 @@ def UCS(row, col, grid, start, goal):
             # Bobot tetangga adalah bobot kumulatif node E ditambah jarak node E ke tetangga
             neighbor_d = explore[1] + eightD(explore[0], neighbor)
 
-            enqueuedWeight[neighbor[0]][neighbor[1]] = neighbor_d
+            if neighbor[0] > neighbor[1]: 
+                enqueuedWeight[neighbor[0]][neighbor[1]] = neighbor[0]
+            else:
+                enqueuedWeight[neighbor[0]][neighbor[1]] = neighbor[1]
             # Memasukkan tetangga ke PQ
             priorityQueue.insert([[neighbor[0], neighbor[1]], neighbor_d, [explore[0][0], explore[0][1]]])
+        
         
         # Setelah node E selesai dieksplorasi maka masukkan ke list explored
         explored.append(explore)
@@ -83,7 +87,7 @@ def UCS(row, col, grid, start, goal):
 
 
 # Debug Purpose
-def printUCS(explored, goal):
+def printBFS(explored, goal):
     if not explored or explored[-1][0] != goal:
         print("No path found")
     else:
