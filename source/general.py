@@ -14,12 +14,12 @@ def inputGrid(datasetName):
         return row, col, grid, start, goal
 
 def searchChar(char, row, col, grid):
-    node = [-1, -1]
+    Node = [-1, -1]
     for i in range(row):
         for j in range(col):
             if grid[i][j] == char:
-                node = [i, j]
-                return node
+                Node = [i, j]
+                return Node
 
 def getNeighbor(coor, row, col, grid): #return list of list valid neighbor coordinates
     i, j = coor
@@ -57,12 +57,12 @@ def eightD(node1, node2): #return float jarak antara tetangga
     return (2) ** 0.5
 
 class Node:
-    def __init__(self, cur_coord, par_coord, cum_weight, heu_val, arrival_order):
-        self.cur_coord = cur_coord
-        self.par_coord = par_coord
-        self.cum_weight = cum_weight        # g(n)  backward cost: weight kumulatif
-        self.heu_val = heu_val              # h(n)  forward cost: heuristic value
-        self.arrival_order = arrival_order
+    def __init__(self, coord, parent, cum_weight, heu_val, arrival_order) -> None:
+        self.cur_coord: list[int]= coord
+        self.parent_coord: list[int] = parent
+        self.cum_weight: float = cum_weight        # g(n)  backward cost: weight kumulatif
+        self.heu_val: float = heu_val              # h(n)  forward cost: heuristic value
+        self.arrival_order: int = arrival_order
 
 class MinHeap:
     def __init__(self):
@@ -72,13 +72,13 @@ class MinHeap:
         return
 
     """Insert a new element into the Min Heap."""
-    def insert(self, node):
+    def insert(self, Node):
 
-        self.array.append(node)
+        self.array.append(Node)
         i = len(self.array) - 1
         while i > 0:
             parent_index = (i - 1) // 2
-            # Tambahkan logika untuk membandingkan node dengan biaya yang sama
+            # Tambahkan logika untuk membandingkan Node dengan biaya yang sama
             if (self.compareEntry(self.array[i], self.array[parent_index])):
                 self.array[i], self.array[parent_index] = self.array[parent_index], self.array[i]
                 i = parent_index
@@ -137,7 +137,7 @@ class MinHeap:
         return self.array[0] if self.array else None
     
     def popMin(self):
-        """Remove and return the root (min) node. Return sentinel if empty."""
+        """Remove and return the root (min) Node. Return sentinel if empty."""
         if not self.array:
             return Node([-1, -1], [-1, -1], -1, -1, -1)
         root = self.array[0]
@@ -152,121 +152,19 @@ class MinHeap:
     def printHeap(self):
         print("Min Heap:", self.array)
 
-def printBacktrack(nodes):
-    # build map coord -> parent (tolerant terhadap beberapa format node)
-    parent_map = {}
-    if not nodes:
-        print("No path found")
-        return
+def pathBacktrack(exploredList: list[Node]) -> list[Node]:
 
-    for n in nodes:
-        # n may be: [[i,j], cost, [pi,pj]]  or  ([i,j], cost)  or other variants
-        coord = None
-        parent = None
-        try:
-            # try canonical: n[0] -> coord
-            possible_coord = n[0]
-            if isinstance(possible_coord, (list, tuple)) and len(possible_coord) == 2 and all(isinstance(x, int) for x in possible_coord):
-                coord = tuple(possible_coord)
-        except Exception:
-            coord = None
+    NodeCount :int = len(exploredList)
+    path :list[Node] = []
+    currentNode :list[int]= exploredList[-1].cur_coord
 
-        # try to get parent if available at index 2
-        try:
-            possible_parent = n[2]
-            if isinstance(possible_parent, (list, tuple)) and len(possible_parent) == 2 and all(isinstance(x, int) for x in possible_parent):
-                parent = tuple(possible_parent)
-        except Exception:
-            parent = None
+    for i in range(NodeCount-1, -1, -1):
+        if exploredList[i].cur_coord == currentNode:
+            path.append(exploredList[i].cur_coord)
+            currentNode = exploredList[i].parent_coord
+            if currentNode == [-1, -1]:
+                break
 
-        # fallback: if node itself is a pair like ([i,j], cost), coord may be n[0]
-        if coord is None and isinstance(n, (list, tuple)) and len(n) >= 1:
-            maybe = n[0]
-            if isinstance(maybe, (list, tuple)) and len(maybe) == 2 and all(isinstance(x, int) for x in maybe):
-                coord = tuple(maybe)
-
-        if coord is not None:
-            parent_map[coord] = parent if parent is not None else (-1, -1)
-
-    # determine goal coordinate from last node in nodes (best-effort)
-    last = nodes[-1]
-    try:
-        goal_coord = tuple(last[0])
-    except Exception:
-        # if can't determine, abort
-        print("No path found")
-        return
-
-    # reconstruct path using parent_map
-    path = []
-    cur = goal_coord
-    while cur != (-1, -1):
-        path.insert(0, [cur[0], cur[1]])
-        cur = parent_map.get(cur, (-1, -1))
-
-    # print path start --> goal
-    for i in range(len(path)):
-        print(f"({path[i][0]},{path[i][1]})", end="")
-        if i < len(path) - 1:
-            print(" -> ", end="")
-
-def pathBacktrack(nodes):
-    # build map coord -> parent (tolerant terhadap beberapa format node)
-    parent_map = {}
-    if not nodes:
-        print("No path found")
-        return
-
-    for n in nodes:
-        # n may be: [[i,j], cost, [pi,pj]]  or  ([i,j], cost)  or other variants
-        coord = None
-        parent = None
-        try:
-            # try canonical: n[0] -> coord
-            possible_coord = n[0]
-            if isinstance(possible_coord, (list, tuple)) and len(possible_coord) == 2 and all(isinstance(x, int) for x in possible_coord):
-                coord = tuple(possible_coord)
-        except Exception:
-            coord = None
-
-        # try to get parent if available at index 2
-        try:
-            possible_parent = n[2]
-            if isinstance(possible_parent, (list, tuple)) and len(possible_parent) == 2 and all(isinstance(x, int) for x in possible_parent):
-                parent = tuple(possible_parent)
-        except Exception:
-            parent = None
-
-        # fallback: if node itself is a pair like ([i,j], cost), coord may be n[0]
-        if coord is None and isinstance(n, (list, tuple)) and len(n) >= 1:
-            maybe = n[0]
-            if isinstance(maybe, (list, tuple)) and len(maybe) == 2 and all(isinstance(x, int) for x in maybe):
-                coord = tuple(maybe)
-
-        if coord is not None:
-            parent_map[coord] = parent if parent is not None else (-1, -1)
-
-    # determine goal coordinate from last node in nodes (best-effort)
-    last = nodes[-1]
-    try:
-        goal_coord = tuple(last[0])
-    except Exception:
-        # if can't determine, abort
-        print("No path found")
-        return
-
-    # reconstruct path using parent_map
-    path = []
-    cur = goal_coord
-    while cur != (-1, -1):
-        path.insert(0, [cur[0], cur[1]])
-        cur = parent_map.get(cur, (-1, -1))
-
-    return path
-
-def printPath(path):
-    for i in range(len(path)):
-        print(f"({path[i][0]},{path[i][1]})", end="")
-        if i < len(path) - 1:
-            print(" -> ", end="")
-    print()
+    return path[::-1]  # reverse path
+    # Slicing Time: 3.000000106112566e-06
+    # Reversing Time: 7.999999979801942e-06
