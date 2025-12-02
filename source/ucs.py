@@ -97,7 +97,7 @@ def UCS(row, col, grid, start, goal):
         path = "No path found"
     else:
         # path = "There's path found"
-        path = pathBacktrack(explored
+        path = pathBacktrack(explored)
 
     # durasi fungsi = waktu saat ini - waktu mulai
     elapsedTime = time.perf_counter() - startTime
