@@ -2,6 +2,22 @@ from general import *
 import time
 import tracemalloc
 
+class Node_UCS(Node):
+    def __init__(self, cur_coord, par_coord, cum_weight, arrival_order):
+        super().__init__(cur_coord, par_coord, cum_weight, -1, arrival_order)
+        # heu_val diatur ke -1 (tidak digunakan)
+
+class minHeap_UCS(MinHeap):
+    def __init__(self):
+        super().__init__()
+    
+    def compareEntry(self, node1, node2):
+        if node1.cum_weight < node2.cum_weight:
+            return True
+        if node1.cum_weight == node2.cum_weight and node1.arrival_order < node2.arrival_order:
+            return True
+        return False
+
 def UCS(row, col, grid, start, goal):
     # Memulai perhitungan memori
     tracemalloc.start()
@@ -10,93 +26,90 @@ def UCS(row, col, grid, start, goal):
     startTime = time.perf_counter()
     
     # Menyimpan bobot kumulatif terbaik untuk setiap node
-    enqueuedWeight = [[float('inf') for _ in range(col)] for _ in range(row)] # matrix row x col
+    visitedGrid = [[float('inf') for _ in range(col)] for _ in range(row)] # matrix row x col
     for i in range(row): 
         for j in range(col): 
-            enqueuedWeight[i][j] = -1
+            visitedGrid[i][j] = -1
     # -1 menyatakan node belum pernah dienqueue
+    # -0 menyatakan node sudah pernah dienqueue
+    # 1 menyatakan node sudah pernah divisit
     
     # List untuk menyimpan semua node yang sudah dieksplorasi
-    explored = []  # format: [[row node, col node], bobot kumulatif, [row prev, col prev], urutan queue]
+    explored = []  # elemen dalam format class Node_UCS
+    explore_count = 0
 
     # Priority queue (PQ) untuk menyimpan daftar node yang sudah dienqueue tapi belom divisit
-    priorityQueue = MinHeap_NumbVal()
+    priorityQueue = minHeap_UCS()
+    arrival_order = 0
     
-    # inisialisasi algoritma ucs
-    enqueuedWeight[start[0]][start[1]] = 0      # menyatakan bahwa bobot kumulatif start adalah 0
-    priorityQueue.insert([[start[0], start[1]], 0, [-1, -1]]) # memasukkan node start ke PQ
+    # inisialisasi algoritma BFS
+    toInsert = Node_UCS(start, [-1, -1], 0, arrival_order)
+    priorityQueue.insert(toInsert)              # memasukkan node start ke PQ
+    visitedGrid[start[0]][start[1]] = 0         # menandakan node start sudah pernah dienqueue
+    arrival_order += 1
     explore = priorityQueue.popMin()            # mengvisit node terkecil pada PQ, disini berarti node start
 
-    # Error handling ketika node start tidak ada
-    # jika queue kosong atau sentinel, keluar
-    # if explore == [[-1, -1], -1, [-1, -1]]:
-    #     print("No path found")
-    #     return
-
     # Selama masih ada node yang bisa divisit dan node yang divisit bukan node goal, enqueue tetangga
-    while(explore[0] != goal):
-        
+    while(explore.cur_coord != goal):
+        visitedGrid[explore.cur_coord[0]][explore.cur_coord[1]] = 1
+
         # iterasi terhadap semua tetangga dari node yang sedang diexplore (E)
-        for neighbor in getNeighbor(explore[0][0], explore[0][1], row, col, grid):
+        for neighbor in getNeighbor(explore.cur_coord, row, col, grid):
             
             # Tetangga tidak perlu di enqueue ketika:
             # Tetangga berupa '#' atau dinding
             # Tetangga sudah dimasukkan sebelumnya
-            if grid[neighbor[0]][neighbor[1]] == '#' or enqueuedWeight[neighbor[0]][neighbor[1]] != -1: 
+            if grid[neighbor[0]][neighbor[1]] == '#' or visitedGrid[neighbor[0]][neighbor[1]] != -1: 
                 continue
             
-            # Bobot tetangga adalah bobot kumulatif node E ditambah jarak node E ke tetangga
-            neighbor_d = explore[1] + eightD(explore[0], neighbor)
+             # Bobot tetangga adalah bobot kumulatif node E ditambah jarak node E ke tetangga
+            neighbor_cum_weight = explore.cum_weight + eightD(explore.cur_coord, neighbor)
 
-            enqueuedWeight[neighbor[0]][neighbor[1]] = neighbor_d
+            toInsert = Node_UCS(neighbor, explore.cur_coord, neighbor_cum_weight, arrival_order)
+            arrival_order += 1
+            
             # Memasukkan tetangga ke PQ
-            priorityQueue.insert([[neighbor[0], neighbor[1]], neighbor_d, [explore[0][0], explore[0][1]]])
+            priorityQueue.insert(toInsert)
+
+            # Karakteristik dari UCS dimana tetangga yang sudah dienqueue tidak dienqueue kembali
+            visitedGrid[neighbor[0]][neighbor[1]] = 0 # menandakan tetangga sudah pernah dienqueue
         
         # Setelah node E selesai dieksplorasi maka masukkan ke list explored
         explored.append(explore)
+        explore_count += 1
 
         # Ambil node E berikutnya dengan mengambil node dengan bobot kumulatif terkecil dari PQ
         explore = priorityQueue.popMin()
 
         # Kasus: PQ kosong tapi belum eksplorasi node goal
         # Artinya path tidak ditemukan
-        if explore == [[-1, -1], -1, [-1, -1]]:
+        if explore.cur_coord == [-1, -1]:
             break
     
     # tadi belum masukin goal ke explored
     # jika goal dipop, tambahkan ke explored agar backtrack bekerja
-    if explore != [[-1, -1], -1, [-1, -1]] and explore[0] == goal:
+    if explore.cur_coord == goal:
         explored.append(explore)
+        explore_count += 1
 
     # Menyusun path
-    if not explored or explored[-1][0] != goal:
+    if not explored or explored[-1].cur_coord != goal:
         path = "No path found"
     else:
-<<<<<<< Updated upstream
-=======
         # path = "There's path found"
->>>>>>> Stashed changes
-        path = pathBacktrack(explored)
+        path = pathBacktrack(explored
 
     # durasi fungsi = waktu saat ini - waktu mulai
     elapsedTime = time.perf_counter() - startTime
     current, peakMemory = tracemalloc.get_traced_memory()
 
     # return n node explored, path cost, path, duration
-    return len(explored), explored.pop(), path, elapsedTime, peakMemory
+    return explore_count, explored[-1].cum_weight, path, elapsedTime, peakMemory
 
 
 # Debug Purpose
-<<<<<<< Updated upstream
-def printUCS(explored, goal):
-    if not explored or explored[-1][0] != goal:
-        print("No path found")
-    else:
-        printBacktrack(explored)
-=======
 # def printUCS(explored, goal):
 #     if not explored or explored[-1].cur_coord != goal:
 #         print("No path found")
 #     else:
 #         printBacktrack(explored)
->>>>>>> Stashed changes

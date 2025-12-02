@@ -152,40 +152,19 @@ class MinHeap:
     def printHeap(self):
         print("Min Heap:", self.array)
 
-<<<<<<< Updated upstream
-def printPath(exploredList: list[Node]) -> None:
-    """
-        ambil Node paling belakang
-        ambil koordinat parent dari Node tersebut
-        iterasi ke belakang sampai ketemu Node dengan koordinat parent yang diambil
-        simpan setiap koordinat Node yang dilewati ke dalam list path
-        ulangi sampai ketemu start Node parent = start
-    """
-
-    pathLong :int = len(exploredList)
-    path :list[Node] = []
-=======
 def pathBacktrack(exploredList: list[Node]) -> list[int]:
 
     NodeCount :int = len(exploredList)
     path :list[int] = []
->>>>>>> Stashed changes
     currentNode :list[int]= exploredList[-1].cur_coord
 
-    for i in range(pathLong-1, -1, -1):
+    for i in range(NodeCount-1, -1, -1):
         if exploredList[i].cur_coord == currentNode:
             path.append(exploredList[i].cur_coord)
             currentNode = exploredList[i].parent_coord
             if currentNode == [-1, -1]:
                 break
 
-<<<<<<< Updated upstream
-    for i in range(len(path)-1, -1, -1):
-        if i == len(path)-1:
-            print(path[i], end=" ")
-        else: print(f"-> {path[i]}", end=" ")        else: print(f"-> {path[i]}", end=" ")
-        else: print(f"-> {path[i]}", end=" ")
-=======
     return path[::-1]  # reverse path
     # Slicing Time: 3.000000106112566e-06
     # Reversing Time: 7.999999979801942e-06
@@ -212,4 +191,3 @@ def printGridPath(grid, path, row, col):
         for j in range(col):
             print(printGrid[i][j], end=' ')
         print()
->>>>>>> Stashed changes
