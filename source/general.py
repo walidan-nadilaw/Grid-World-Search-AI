@@ -14,12 +14,12 @@ def inputGrid(datasetName):
         return row, col, grid, start, goal
 
 def searchChar(char, row, col, grid):
-    node = [-1, -1]
+    Node = [-1, -1]
     for i in range(row):
         for j in range(col):
             if grid[i][j] == char:
-                node = [i, j]
-                return node
+                Node = [i, j]
+                return Node
 
 def getNeighbor(coor, row, col, grid): #return list of list valid neighbor coordinates
     i, j = coor
@@ -57,12 +57,12 @@ def eightD(node1, node2): #return float jarak antara tetangga
     return (2) ** 0.5
 
 class Node:
-    def __init__(self, cur_coord, par_coord, cum_weight, heu_val, arrival_order):
-        self.cur_coord = cur_coord
-        self.par_coord = par_coord
-        self.cum_weight = cum_weight        # g(n)  backward cost: weight kumulatif
-        self.heu_val = heu_val              # h(n)  forward cost: heuristic value
-        self.arrival_order = arrival_order
+    def __init__(self, coord, parent, cum_weight, heu_val, arrival_order) -> None:
+        self.cur_coord: list[int]= coord
+        self.parent_coord: list[int] = parent
+        self.cum_weight: float = cum_weight        # g(n)  backward cost: weight kumulatif
+        self.heu_val: float = heu_val              # h(n)  forward cost: heuristic value
+        self.arrival_order: int = arrival_order
 
 class MinHeap:
     def __init__(self):
@@ -72,13 +72,13 @@ class MinHeap:
         return
 
     """Insert a new element into the Min Heap."""
-    def insert(self, node):
+    def insert(self, Node):
 
-        self.array.append(node)
+        self.array.append(Node)
         i = len(self.array) - 1
         while i > 0:
             parent_index = (i - 1) // 2
-            # Tambahkan logika untuk membandingkan node dengan biaya yang sama
+            # Tambahkan logika untuk membandingkan Node dengan biaya yang sama
             if (self.compareEntry(self.array[i], self.array[parent_index])):
                 self.array[i], self.array[parent_index] = self.array[parent_index], self.array[i]
                 i = parent_index
@@ -137,7 +137,7 @@ class MinHeap:
         return self.array[0] if self.array else None
     
     def popMin(self):
-        """Remove and return the root (min) node. Return sentinel if empty."""
+        """Remove and return the root (min) Node. Return sentinel if empty."""
         if not self.array:
             return Node([-1, -1], [-1, -1], -1, -1, -1)
         root = self.array[0]
@@ -152,25 +152,17 @@ class MinHeap:
     def printHeap(self):
         print("Min Heap:", self.array)
 
-class node:
-    def __init__(self, coord, parent, cum_weight, heu_val, arrival_order) -> None:
-        self.cur_coord: list[int]= coord
-        self.parent_coord: list[int] = parent
-        self.cum_weight: float = cum_weight
-        self.heu_val: float = heu_val
-        self.arrival_order: int = arrival_order
-
-def printPath(exploredList: list[node]) -> None:
+def printPath(exploredList: list[Node]) -> None:
     """
-        ambil node paling belakang
-        ambil koordinat parent dari node tersebut
-        iterasi ke belakang sampai ketemu node dengan koordinat parent yang diambil
-        simpan setiap koordinat node yang dilewati ke dalam list path
-        ulangi sampai ketemu start node parent = start
+        ambil Node paling belakang
+        ambil koordinat parent dari Node tersebut
+        iterasi ke belakang sampai ketemu Node dengan koordinat parent yang diambil
+        simpan setiap koordinat Node yang dilewati ke dalam list path
+        ulangi sampai ketemu start Node parent = start
     """
 
     pathLong :int = len(exploredList)
-    path :list[node] = []
+    path :list[Node] = []
     currentNode :list[int]= exploredList[-1].cur_coord
 
     for i in range(pathLong-1, -1, -1):
