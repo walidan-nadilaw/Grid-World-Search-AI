@@ -29,9 +29,12 @@ def BFS(row, col, grid, start, goal):
         for j in range(col): 
             visitedGrid[i][j] = -1
     # -1 menyatakan node belum pernah dienqueue
+    # -0 menyatakan node sudah pernah dienqueue
+    # 1 menyatakan node sudah pernah divisit
     
     # List untuk menyimpan semua node yang sudah dieksplorasi
-    explored = []  # isinya dalam format class Node_BFS
+    explored = []  # elemen dalam format class Node_BFS
+    explore_count = 0
 
     # Priority queue (PQ) untuk menyimpan daftar node yang sudah dienqueue tapi belom divisit
     priorityQueue = minHeap_BFS()
@@ -39,8 +42,10 @@ def BFS(row, col, grid, start, goal):
 
     # inisialisasi algoritma BFS
     toInsert = Node_BFS(start, [-1, -1], 0, arrival_order)
-    priorityQueue.insert(toInsert) # memasukkan node start ke PQ
+    priorityQueue.insert(toInsert)              # memasukkan node start ke PQ
+    visitedGrid[start[0]][start[1]] = 0         # menandakan node start sudah pernah dienqueue
     arrival_order += 1
+
     explore = priorityQueue.popMin()            # mengvisit node terkecil pada PQ, disini berarti node start
 
     # Selama masih ada node yang bisa divisit dan node yang divisit bukan node goal, enqueue tetangga
@@ -64,10 +69,14 @@ def BFS(row, col, grid, start, goal):
 
             # Memasukkan tetangga ke PQ
             priorityQueue.insert(toInsert)
+
+            # Karakteristik dari BFS dimana tetangga yang sudah dienqueue tidak dienqueue kembali
+            visitedGrid[neighbor[0]][neighbor[1]] = 0 # menandakan tetangga sudah pernah dienqueue
         
         
         # Setelah node E selesai dieksplorasi maka masukkan ke list explored
         explored.append(explore)
+        explore_count += 1
 
         # Ambil node E berikutnya dengan mengambil node dengan bobot kumulatif terkecil dari PQ
         explore = priorityQueue.popMin()
@@ -81,6 +90,7 @@ def BFS(row, col, grid, start, goal):
     # jika goal dipop, tambahkan ke explored agar backtrack bekerja
     if explore.cur_coord == goal:
         explored.append(explore)
+        explore_count += 1
 
     # Menyusun path
     if not explored or explored[-1].cur_coord != goal:
@@ -94,7 +104,7 @@ def BFS(row, col, grid, start, goal):
     current, peakMemory = tracemalloc.get_traced_memory()
 
     # return n node explored, path cost, path, duration
-    return len(explored), explored[-1], path, elapsedTime, peakMemory
+    return explore_count, explored[-1].cum_weight, path, elapsedTime, peakMemory
 
 
 # Debug Purpose

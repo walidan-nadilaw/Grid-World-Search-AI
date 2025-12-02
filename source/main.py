@@ -7,14 +7,14 @@ if __name__ == "__main__":
 
     # Membaca input grid dari file .txt
     # Parameter fungsi inputGrid adalah nama dataset (tanpa .txt)
-    row, col, grid, start, goal = inputGrid('input5')
+    row, col, grid, start, goal = inputGrid('input100x100')
 
     # Mencetak grid yang dibaca
-    # for i in range(row):
-    #     for j in range(col):
-    #         print(grid[i][j], end=' ')
-    #     print()
-    # print()
+    for i in range(row):
+        for j in range(col):
+            print(grid[i][j], end=' ')
+        print()
+    print()
 
 
 #======= BFS =======
@@ -22,9 +22,9 @@ if __name__ == "__main__":
 
     # Mencetak hasil
     print("BFS explore\t:", nExp_BFS)
-    print("BFS cost\t:", pathCost_BFS.cum_weight)
+    print("BFS cost\t:", pathCost_BFS)
 
-    print("BFS path\t: ", path_BFS)
+    print("BFS path\t:", path_BFS)
     # print("BFS path\t: ", end='')
     # if(type(path_BFS) is str): print(path_BFS)  # ketika tidak ada path dari start menuju goal
     # else: printPath(path_BFS)                   # ketika ada path dari start menuju goal
@@ -39,18 +39,19 @@ if __name__ == "__main__":
 
 
 #======= UCS =======
-    # nExp_UCS, pathCost_UCS, path_UCS, time_UCS, memory_UCS = UCS(row, col, grid, start, goal)
+    nExp_UCS, pathCost_UCS, path_UCS, time_UCS, memory_UCS = UCS(row, col, grid, start, goal)
 
     # # Mencetak hasil
-    # print("UCS explore\t:", nExp_UCS)
-    # print("UCS cost\t:", pathCost_UCS[1])
+    print("UCS explore\t:", nExp_UCS)
+    print("UCS cost\t:", pathCost_UCS)
 
+    print("BFS path\t:", path_BFS)
     # print("UCS path\t: ", end='')
     # # if(type(path_UCS) is str): print(path_UCS)  # ketika tidak ada path dari start menuju goal
     # # else: printPath(path_UCS)                   # ketika ada path dari start menuju goal
     
-    # print(f"UCS time\t: {time_UCS:.6f} seconds")
-    # print("UCS memory\t:", memory_UCS / 1024, "KB")
+    print(f"UCS time\t: {time_UCS:.6f} seconds")
+    print("UCS memory\t:", memory_UCS / 1024, "KB")
 
     # path_UCS.pop(0)
     # path_UCS.pop()
