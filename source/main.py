@@ -7,7 +7,7 @@ if __name__ == "__main__":
 
     # Membaca input grid dari file .txt
     # Parameter fungsi inputGrid adalah nama dataset (tanpa .txt)
-    row, col, grid, start, goal = inputGrid('input500x500')
+    row, col, grid, start, goal = inputGrid('input5')
 
     # Mencetak grid yang dibaca
     # printGridPath(grid, [], row, col)
