@@ -2,11 +2,6 @@ from general import *
 import time
 import tracemalloc
 
-class Node_BFS(Node):
-    def __init__(self, cur_coord, par_coord, cum_weight, arrival_order):
-        super().__init__(cur_coord, par_coord, cum_weight, -1, arrival_order)
-        # heu_val diatur ke -1 (tidak digunakan)
-
 class minHeap_BFS(MinHeap):
     
     def compareEntry(self, node1, node2):
@@ -39,7 +34,7 @@ def BFS(row, col, grid, start, goal):
     arrival_order = 0
 
     # inisialisasi algoritma BFS
-    toInsert = Node_BFS(start, [-1, -1], 0, arrival_order)
+    toInsert = Node(start, [-1, -1], 0, 0, arrival_order)
     priorityQueue.insert(toInsert)              # memasukkan node start ke PQ
     visitedGrid[start[0]][start[1]] = 0         # menandakan node start sudah pernah dienqueue
     arrival_order += 1
@@ -62,7 +57,7 @@ def BFS(row, col, grid, start, goal):
             # Bobot tetangga adalah bobot kumulatif node E ditambah jarak node E ke tetangga
             neighbor_cum_weight = explore.cum_weight + eightD(explore.cur_coord, neighbor)
 
-            toInsert = Node_BFS(neighbor, explore.cur_coord, neighbor_cum_weight, arrival_order)
+            toInsert = Node(neighbor, explore.cur_coord, neighbor_cum_weight, -1, arrival_order)
             arrival_order += 1
 
             # Memasukkan tetangga ke PQ

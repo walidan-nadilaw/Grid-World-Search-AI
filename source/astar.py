@@ -20,10 +20,10 @@ def astar(row, col, grid, start, goal):
     startTime = time.perf_counter()
     
     # Menyimpan bobot kumulatif terbaik untuk setiap node
-    visitedGrid = [[float('inf') for _ in range(col)] for _ in range(row)] # matrix row x col
-    for i in range(row): 
-        for j in range(col): 
-            visitedGrid[i][j] = -1
+    visitedGrid = [[-1 for _ in range(col)] for _ in range(row)] # matrix row x col
+    # for i in range(row): 
+    #     for j in range(col): 
+    #         visitedGrid[i][j] = -1
     # -1 menyatakan node belum pernah dienqueue
     # -0 menyatakan node sudah pernah dienqueue
     # 1 menyatakan node sudah pernah divisit
@@ -37,7 +37,7 @@ def astar(row, col, grid, start, goal):
     arrival_order = 0
     
     # inisialisasi algoritma BFS
-    toInsert = Node(start, [-1, -1], 0, euclidean8d(start, goal), arrival_order)
+    toInsert = Node(start, [-1, -1], 0, HeuristicGW(start, goal), arrival_order)
     priorityQueue.insert(toInsert)              # memasukkan node start ke PQ
     visitedGrid[start[0]][start[1]] = 0         # menandakan node start sudah pernah dienqueue
     arrival_order += 1
@@ -65,7 +65,7 @@ def astar(row, col, grid, start, goal):
                 if alreadyQeueued.cum_weight >= neighbor_cum_weight: continue
                 priorityQueue.delete(neighbor)
 
-            toInsert = Node(neighbor, explore.cur_coord, neighbor_cum_weight, euclidean8d(neighbor, goal), arrival_order)
+            toInsert = Node(neighbor, explore.cur_coord, neighbor_cum_weight, HeuristicGW(neighbor, goal), arrival_order)
             arrival_order += 1 
             
             # Memasukkan tetangga ke PQ

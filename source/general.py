@@ -42,7 +42,7 @@ def getNeighbor(coor, row, col, grid): #return list of list valid neighbor coord
         if grid[i-1][j-1] != '#':  neighbor.append([i-1, j-1]) # barat laut
     return neighbor
 
-def euclidean8d(node1, node2): #return float jarak heuristik antara start dan goal
+def HeuristicGW(node1, node2): #return float jarak heuristik antara start dan goal
     dx = abs(node1[0] - node2[0])
     dy = abs(node1[1] - node2[1])
     
